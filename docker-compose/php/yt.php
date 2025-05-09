@@ -252,6 +252,32 @@ body.dark-mode .btn-outline-light {
     </div>
   </div>
 
+  <!-- SIGN UP MODAL -->
+<div class="modal fade" id="signupModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Εγγραφή Χρήστη</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+      </div>
+      <div class="modal-body">
+        <label>Username</label>
+        <input type="text" id="signupUsername" class="form-control mb-2" required>
+        <label>Email</label>
+        <input type="email" id="signupEmail" class="form-control mb-2" required>
+        <label>Password</label>
+        <input type="password" id="signupPassword" class="form-control mb-2" required>
+        <div class="d-grid gap-2 mt-3">
+          <button class="btn btn-success" onclick="handleSignup()">Εγγραφή</button>
+        </div>
+        <div class="text-center mt-3">
+          <small>Έχεις ήδη λογαριασμό; <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Σύνδεση</a></small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
   <!-- HOME -->
   <div class="container mt-4" id="homeSection">
     <h3>Καλώς ήρθες στην αρχική!</h3>
@@ -283,6 +309,11 @@ body.dark-mode .btn-outline-light {
     <input type="password" id="loginPassword" class="form-control" placeholder="Password">
     <div class="d-grid gap-2 mt-3">
       <button class="btn btn-primary" onclick="fakeLogin()">Login</button>
+    </div>
+    <div class="text-center mt-3">
+     <small>Δεν έχεις λογαριασμό; 
+     <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal">Εγγραφή</a>
+     </small>
     </div>
   </div>
 </div>
@@ -473,6 +504,45 @@ window.addEventListener("DOMContentLoaded", () => {
     document.body.classList.add("dark-mode");
   }
 });
+
+// Αποθήκευση χρηστών στο localStorage
+let registeredUsers = JSON.parse(localStorage.getItem("melofyUsers")) || [
+  { username: "testuser", password: "1234", email: "test@example.com", avatar: "https://via.placeholder.com/100" }
+];
+
+function handleSignup() {
+  const username = document.getElementById("signupUsername").value.trim();
+  const email = document.getElementById("signupEmail").value.trim();
+  const password = document.getElementById("signupPassword").value.trim();
+
+  if (!username || !email || !password) return alert("Συμπλήρωσε όλα τα πεδία.");
+
+  const exists = registeredUsers.find(u => u.username === username);
+  if (exists) return alert("Το όνομα χρήστη υπάρχει ήδη.");
+
+  const newUser = { username, email, password, avatar: "https://via.placeholder.com/100" };
+  registeredUsers.push(newUser);
+  localStorage.setItem("melofyUsers", JSON.stringify(registeredUsers));
+
+  alert("Η εγγραφή ήταν επιτυχής! Μπορείς τώρα να συνδεθείς.");
+  bootstrap.Modal.getInstance(document.getElementById("signupModal")).hide();
+}
+
+function fakeLogin() {
+  const u = document.getElementById("loginUsername").value.trim();
+  const p = document.getElementById("loginPassword").value.trim();
+
+  const user = registeredUsers.find(x => x.username === u && x.password === p);
+  if (user) {
+    userProfile = { ...user, favorites: [] };
+    document.getElementById("loginSection").style.display = "none";
+    document.getElementById("appContent").style.display = "block";
+    refreshProfileUI();
+  } else {
+    alert("Λάθος στοιχεία. Δοκίμασε ξανά.");
+  }
+}
+
 
 </script>
 
