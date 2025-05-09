@@ -257,7 +257,7 @@ body.dark-mode .btn-outline-light {
   <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Εγγραφή Χρήστη</h5>
+        <h5 class="modal-title">Sign up</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
       </div>
       <div class="modal-body">
@@ -268,10 +268,10 @@ body.dark-mode .btn-outline-light {
         <label>Password</label>
         <input type="password" id="signupPassword" class="form-control mb-2" required>
         <div class="d-grid gap-2 mt-3">
-          <button class="btn btn-success" onclick="handleSignup()">Εγγραφή</button>
+          <button class="btn btn-success" onclick="handleSignup()">Sign up</button>
         </div>
         <div class="text-center mt-3">
-          <small>Έχεις ήδη λογαριασμό; <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Σύνδεση</a></small>
+          <small>Already have an accunt? <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">Σύνδεση</a></small>
         </div>
       </div>
     </div>
@@ -515,16 +515,16 @@ function handleSignup() {
   const email = document.getElementById("signupEmail").value.trim();
   const password = document.getElementById("signupPassword").value.trim();
 
-  if (!username || !email || !password) return alert("Συμπλήρωσε όλα τα πεδία.");
+  if (!username || !email || !password) return alert("Fill in all fields.");
 
   const exists = registeredUsers.find(u => u.username === username);
-  if (exists) return alert("Το όνομα χρήστη υπάρχει ήδη.");
+  if (exists) return alert("Username already used.");
 
   const newUser = { username, email, password, avatar: "https://via.placeholder.com/100" };
   registeredUsers.push(newUser);
   localStorage.setItem("melofyUsers", JSON.stringify(registeredUsers));
 
-  alert("Η εγγραφή ήταν επιτυχής! Μπορείς τώρα να συνδεθείς.");
+  alert("Sign up successful.");
   bootstrap.Modal.getInstance(document.getElementById("signupModal")).hide();
 }
 
@@ -539,7 +539,7 @@ function fakeLogin() {
     document.getElementById("appContent").style.display = "block";
     refreshProfileUI();
   } else {
-    alert("Λάθος στοιχεία. Δοκίμασε ξανά.");
+    alert("Invalid input. Try again.");
   }
 }
 
