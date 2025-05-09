@@ -79,6 +79,68 @@
     #appContent {
       display: none;
     }
+
+    body.dark-mode {
+  background: linear-gradient(to right, #121212, #1f1f1f);
+  color: #e0e0e0;
+}
+
+body.dark-mode .card,
+body.dark-mode #loginCard,
+body.dark-mode .modal-content,
+body.dark-mode .offcanvas {
+  background-color: #2c2c2c;
+  color: #e0e0e0;
+}
+
+body.dark-mode .btn-primary {
+  background-color: #8e44ad;
+}
+
+body.dark-mode .btn-primary:hover {
+  background-color: #732d91;
+}
+
+body.dark-mode .offcanvas-title,
+body.dark-mode .offcanvas-body,
+body.dark-mode h2,
+body.dark-mode h3,
+body.dark-mode .card-title,
+body.dark-mode .card-text,
+body.dark-mode label {
+  color: #e0e0e0;
+}
+
+body.dark-mode .list-group-item {
+  background-color: #333;
+  color: #e0e0e0;
+  border-color: #444;
+}
+
+body.dark-mode .form-control {
+  background-color: #444;
+  color: #fff;
+  border-color: #666;
+}
+
+body.dark-mode .form-control::placeholder {
+  color: #bbb;
+}
+
+body.dark-mode .modal-header {
+  background-color: #444;
+  color: #fff;
+}
+
+body.dark-mode .navbar {
+  background-color: #1a1a1a !important;
+}
+
+body.dark-mode .btn-outline-light {
+  border-color: #ccc;
+  color: #ccc;
+}
+
   </style>
 </head>
 <body>
@@ -104,6 +166,7 @@
           <input class="form-control me-2" type="text" placeholder="Search">
           <button class="btn btn-primary" type="submit">Search</button>
         </form>
+        <button class="btn btn-outline-light me-2" onclick="toggleDarkMode()">🌙</button>
         <button class="btn p-0 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileSidebar">
           <img src="images.png" class="rounded-circle" alt="User Avatar" style="width: 40px; height: 40px;">
         </button>
@@ -398,6 +461,19 @@
       container.appendChild(card);
     });
   }
+
+  function toggleDarkMode() {
+  const isDark = document.body.classList.toggle("dark-mode");
+  localStorage.setItem("darkMode", isDark ? "on" : "off");
+}
+
+// Εφαρμόζουμε dark mode αν ήταν ενεργό στην προηγούμενη επίσκεψη
+window.addEventListener("DOMContentLoaded", () => {
+  if (localStorage.getItem("darkMode") === "on") {
+    document.body.classList.add("dark-mode");
+  }
+});
+
 </script>
 
 </body>
