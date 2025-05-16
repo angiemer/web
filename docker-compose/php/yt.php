@@ -181,11 +181,11 @@ body.dark-mode .btn-outline-light {
       <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
-      <ul class="list-unstyled">
-        <li><a href="#" class="btn btn-link" onclick="goHome()" data-bs-dismiss="offcanvas">Home</a></li>
-        <li><a href="#" class="btn btn-link" onclick="goToPlaylists()" data-bs-dismiss="offcanvas">Playlists</a></li>
-        <li><a href="#" class="btn btn-link" onclick="showFavorites()" data-bs-dismiss="offcanvas">Favorites</a></li>
-      </ul>
+      <div class="d-grid gap-2>
+        <button class="btn btn-outline-primary" onclick="goHome()" data-bs-dismiss="offcanvas">Home</button>
+        <button class="btn btn-outline-primary" onclick="goToPlaylist()" data-bs-dismiss="offcanvas">My Playlists</button>
+        <button class="btn btn-outline-primary" onclick="showFavorites()" data-bs-dismiss="offcanvas">My Favorites</button>
+      </div>
     </div>
   </div>
 
