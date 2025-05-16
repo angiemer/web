@@ -311,8 +311,8 @@ body.dark-mode .btn-outline-light {
       <button class="btn btn-primary" onclick="fakeLogin()">Login</button>
     </div>
     <div class="text-center mt-3">
-     <small>Δεν έχεις λογαριασμό; 
-     <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal">Εγγραφή</a>
+     <small>No account? 
+     <a href="#" data-bs-toggle="modal" data-bs-target="#signupModal">Sign up</a>
      </small>
     </div>
   </div>
