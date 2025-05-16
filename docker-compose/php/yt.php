@@ -182,9 +182,9 @@ body.dark-mode .btn-outline-light {
     </div>
     <div class="offcanvas-body">
       <div class="d-grid gap-2">
-        <button class="btn btn-outline-primary" onclick="goHome()" data-bs-dismiss="offcanvas">Home</button>
-        <button class="btn btn-outline-primary" onclick="goToPlaylists()" data-bs-dismiss="offcanvas">Playlists</button>
-        <button class="btn btn-outline-primary" onclick="showFavorites()" data-bs-dismiss="offcanvas">Favorites</button>
+        <button class="btn btn-primary" onclick="goHome()" data-bs-dismiss="offcanvas">Home</button>
+        <button class="btn btn-primary" onclick="goToPlaylists()" data-bs-dismiss="offcanvas">Playlists</button>
+        <button class="btn btn-primary" onclick="showFavorites()" data-bs-dismiss="offcanvas">Favorites</button>
     </div>
     </div>
   </div>
