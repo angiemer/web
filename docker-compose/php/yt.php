@@ -198,7 +198,7 @@ body.dark-mode .btn-outline-light {
     <div class="offcanvas-body">
       <div class="card text-center">
         <div class="card-body">
-          <img src="https://via.placeholder.com/100" class="rounded-circle mb-3" alt="User Avatar">
+          <img src="images.png" class="rounded-circle mb-3">
           <h5 class="card-title" id="profileUsername">Username</h5>
           <p class="card-text" id="profileEmail">email@example.com</p>
           <div class="d-grid gap-2">
@@ -323,7 +323,7 @@ body.dark-mode .btn-outline-light {
     username: "testuser",
     email: "test@example.com",
     password: "1234",
-    avatar: "https://via.placeholder.com/100",
+    avatar: "images.png",
     favorites: []
   };
 
@@ -507,7 +507,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
 // Αποθήκευση χρηστών στο localStorage
 let registeredUsers = JSON.parse(localStorage.getItem("melofyUsers")) || [
-  { username: "testuser", password: "1234", email: "test@example.com", avatar: "https://via.placeholder.com/100" }
+  { username: "testuser", password: "1234", email: "test@example.com", avatar: "images.png" }
 ];
 
 function handleSignup() {
@@ -520,7 +520,7 @@ function handleSignup() {
   const exists = registeredUsers.find(u => u.username === username);
   if (exists) return alert("Username already used.");
 
-  const newUser = { username, email, password, avatar: "https://via.placeholder.com/100" };
+  const newUser = { username, email, password, avatar: "images.png" };
   registeredUsers.push(newUser);
   localStorage.setItem("melofyUsers", JSON.stringify(registeredUsers));
 
