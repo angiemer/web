@@ -80,9 +80,9 @@
       display: none;
     }
 
-    body.dark-mode {
-  background: linear-gradient(to right, #121212, #1f1f1f);
-  color: #e0e0e0;
+body.dark-mode {
+  background: linear-gradient(to left, #2a1a4f, #1e2a78); /* σκούρο μωβ σε μπλε */
+  font-family: 'Segoe UI', sans-serif;
 }
 
 body.dark-mode .card,
