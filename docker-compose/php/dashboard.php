@@ -237,7 +237,7 @@ $conn->close();
 
         <!-- VIDEOS -->
     <div class="container mt-5" style="display:block;">
-        <h1 class="mb-4">Αποτελέσματα αναζήτησης</h1>
+        <h1 class="mb-4">Search results</h1>
 
         <?php if ($searchResponse && !empty($searchResponse['items'])):?>
             <div class="row">
@@ -255,7 +255,7 @@ $conn->close();
                             <form method="post" action="add_video.php" class="d-inline">
                                 <input type="hidden" name="videoId" value="<?php echo $videoId; ?>">
                                 <input type="hidden" name="title" value="<?php echo htmlspecialchars($title); ?>">
-                                <button type="submit" class="btn btn-sm btn-success">Προσθήκη στη λίστα</button>
+                                <button type="submit" class="btn btn-sm btn-success">Add to list</button>
                             </form>
                         </div>
                     </div>
@@ -263,7 +263,7 @@ $conn->close();
                 <?php endforeach; ?>
             </div>
         <?php else: ?>
-            <p>Κάνε μια αναζήτηση για να δεις αποτελέσματα.</p>
+            <p>search to see results.</p>
         <?php endif; ?>
     </div>
     <script type="text/javascript" src="functions.js"></script>
