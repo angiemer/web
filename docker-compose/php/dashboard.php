@@ -27,7 +27,7 @@ $userProfile = [
     'first_name' => '',
     'last_name' => '',
     'email' => '',
-    'avatar' => 'https://via.placeholder.com/100.png',
+    'avatar' => 'images.png',
     'favorites' => []
 ];
 
@@ -227,9 +227,11 @@ $conn->close();
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
             </div>
             <div class="offcanvas-body">
-                <button class="btn btn-primary" onclick="goHome()" data-bs-dismiss="offcanvas">Home</button>
-                <button class="btn btn-primary" onclick="goToPlaylists()" data-bs-dismiss="offcanvas">Playlists</button>
-                <button class="btn btn-primary" onclick="showFavorites()" data-bs-dismiss="offcanvas">Favorites</button> 
+                <div class="d-grid gap-2">
+                    <button class="btn btn-primary" onclick="goHome()" data-bs-dismiss="offcanvas">Home</button>
+                    <button class="btn btn-primary" onclick="goToPlaylists()" data-bs-dismiss="offcanvas">Playlists</button>
+                    <button class="btn btn-primary" onclick="showFavorites()" data-bs-dismiss="offcanvas">Favorites</button> 
+                </div>
             </div>
         </div>
 
