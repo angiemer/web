@@ -225,11 +225,9 @@ $conn->close();
                 <button type="button" class="btn-close" data-bs-dismiss="offcanvas"></button>
             </div>
             <div class="offcanvas-body">
-                    <ul class="list-unstyled">
-                        <li><a href="#" class="btn btn-link" onclick="goHome()" data-bs-dismiss="offcanvas">Home</a></li>
-                        <li><a href="#" class="btn btn-link" onclick="goToPlaylists()" data-bs-dismiss="offcanvas">Playlists</a></li>
-                        <li><a href="#" class="btn btn-link" onclick="showFavorites()" data-bs-dismiss="offcanvas">Favorites</a></li>
-                    </ul>
+                <button class="btn btn-primary" onclick="goHome()" data-bs-dismiss="offcanvas">Home</button>
+                <button class="btn btn-primary" onclick="goToPlaylists()" data-bs-dismiss="offcanvas">Playlists</button>
+                <button class="btn btn-primary" onclick="showFavorites()" data-bs-dismiss="offcanvas">Favorites</button> 
             </div>
         </div>
 
