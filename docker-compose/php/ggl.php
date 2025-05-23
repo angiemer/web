@@ -1,5 +1,4 @@
 <?php
-// header('Content-Type: application/json');
 
 if(file_exists('./vendor/autoload.php')){
     require_once './vendor/autoload.php';
@@ -21,9 +20,17 @@ session_start();
 
 // Authenticate the user
 if (isset($_GET['code'])) {
-    $client->authenticate($_GET['code']);
-    $_SESSION['access_token'] = $client->getAccessToken();
-    header('Location: ' . filter_var($client->getRedirectUri(), FILTER_SANITIZE_URL));
+    try {
+        $client->authenticate($_GET['code']);
+        $_SESSION['access_token'] = $client->getAccessToken();
+        // Redirect to dashboard.php after successful authentication
+        header('Location: dashboard.php');
+        exit();
+    } catch (Exception $e) {
+        error_log("OAuth authentication error: " . $e->getMessage());
+        echo "Authentication failed: " . htmlspecialchars($e->getMessage());
+        exit();
+    }
 }
 
 try {
@@ -36,16 +43,15 @@ try {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $query = trim($_POST['query'] ?? '');
             $searchResponse = $youtube->search->listSearch('snippet', array(
-                'q' => $query,
-                'maxResults' => 10,
-            ));
-            $_SESSION["searched"] = true;
-            $_SESSION["array_of_response"] = $searchResponse;
+            'q' => $query,
+            'maxResults' => 10,
+        ));
 
+        $_SESSION["searched"] = true;
+        $_SESSION["array_of_response"] = $searchResponse;
 
-            // print_r($searchResponse);
-            //header("location:dashboard.php");
-            //exit();
+        header("location:dashboard.php");
+        exit();
 
         }
 

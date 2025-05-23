@@ -283,3 +283,8 @@
         function logout() {
             window.location.href = 'logout.php';
         }
+
+        function search(){
+            document.getElementById('result').style.display = 'block';
+            alert("sindie search funcrion");
+        }

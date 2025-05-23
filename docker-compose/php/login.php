@@ -8,7 +8,7 @@ header('Content-Type: application/json'); // response as json
 require_once 'db.php';
 
 // Εάν είναι POST request
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $username = trim($_POST['userUsername'] ?? '');
     $password = trim($_POST['userPassword'] ?? '');
 
@@ -36,6 +36,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['logged_in'] = true;
                 $_SESSION['last_activity'] = time();
+                $_SESSION["searched"] = false;
+                $_SESSION["array_of_response"] = '';
 
                 // Επιστροφή JSON για AJAX ή ανακατεύθυνση για φόρμες
                 if (isset($_POST['ajax'])) {

@@ -3,13 +3,15 @@
 if (file_exists('./vendor/autoload.php')) {
     require_once './vendor/autoload.php';
 }
-// session_start();
-require 'ggl.php';
-// $searchResponse = isset($_SESSION['array_of_response']) ? $_SESSION['array_of_response'] : null;
-// print_r($searchResponse['items']);
-if ($searchResponse && !empty($searchResponse['items'])){
-    echo "YES!";
+require_once 'ggl.php';
+//session_start();
+$searchResponse = isset($_SESSION['array_of_response']) ? $_SESSION['array_of_response'] : null;
 
+if ($searchResponse && !empty($searchResponse['items'])){
+    echo '<script type="text/javascript">',
+    'search();',
+    '</script>';
+    echo "<script>alert('inside if')</script>";
 }
 require_once 'db.php';
 
@@ -232,7 +234,7 @@ $conn->close();
         </div>
 
         <!-- VIDEOS -->
-    <div class="container mt-5" id="result">
+    <div class="container mt-5" style="display:block;">
         <h1 class="mb-4">Αποτελέσματα αναζήτησης</h1>
 
         <?php if ($searchResponse && !empty($searchResponse['items'])):?>
