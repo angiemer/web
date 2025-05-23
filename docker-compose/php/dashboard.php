@@ -1,11 +1,16 @@
 <?php
 
-if (file_exists('../vendor/autoload.php')) {
-    require_once '../vendor/autoload.php';
+if (file_exists('./vendor/autoload.php')) {
+    require_once './vendor/autoload.php';
 }
-session_start();
-$searchResponse = isset($_SESSION['array_of_response']) ? $_SESSION['array_of_response'] : null;
+// session_start();
+require 'ggl.php';
+// $searchResponse = isset($_SESSION['array_of_response']) ? $_SESSION['array_of_response'] : null;
+// print_r($searchResponse['items']);
+if ($searchResponse && !empty($searchResponse['items'])){
+    echo "YES!";
 
+}
 require_once 'db.php';
 
 // Έλεγχος αν ο χρήστης είναι συνδεδεμένος
@@ -96,7 +101,7 @@ $conn->close();
                             </button>
                         </li>
                     </ul>
-                    <form class="d-flex me-3" method="post" action="ggl.php">
+                    <form class="d-flex me-3" method="post" action="dashboard.php">
                         <input class="form-control me-2" type="text" placeholder="Search" name="query">
                         <button class="btn btn-primary" type="submit">Search</button>
                     </form>

@@ -1,8 +1,8 @@
 <?php
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
 
-if(file_exists('../vendor/autoload.php')){
-    require_once '../vendor/autoload.php';
+if(file_exists('./vendor/autoload.php')){
+    require_once './vendor/autoload.php';
 }
 
 // Load environment variables from .env file
@@ -36,15 +36,16 @@ try {
         if($_SERVER['REQUEST_METHOD'] === 'POST'){
             $query = trim($_POST['query'] ?? '');
             $searchResponse = $youtube->search->listSearch('snippet', array(
-            'q' => $query,
-            'maxResults' => 10,
-        ));
+                'q' => $query,
+                'maxResults' => 10,
+            ));
+            $_SESSION["searched"] = true;
+            $_SESSION["array_of_response"] = $searchResponse;
 
-        $_SESSION["searched"] = true;
-        $_SESSION["array_of_response"] = $searchResponse;
 
-        header("location:dashboard.php");
-        exit();
+            // print_r($searchResponse);
+            //header("location:dashboard.php");
+            //exit();
 
         }
 
