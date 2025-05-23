@@ -58,7 +58,7 @@ try {
         $userProfile['last_name'] = $user['last_name'] ?: '';
         $userProfile['username'] = $user['username'];
         $userProfile['email'] = $user['email'] ?: '';
-        $userProfile['avatar'] = $user['avatar'] ?: 'https://via.placeholder.com/100.png';
+        $userProfile['avatar'] = $user['avatar'] ?: 'images.png';
     } else {
         error_log("User not found or multiple users with username: $username");
         session_destroy();
