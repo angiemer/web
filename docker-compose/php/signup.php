@@ -1,3 +1,6 @@
+<?php 
+    $err_message = $_GET['err_message'] ?? '';
+?>
 <!DOCTYPE html>
 <html lang="el">
 <head>
@@ -30,7 +33,8 @@
                 <label>Email</label>
                 <input type="email" id="signupEmail" name="email" class="form-control mb-2" required>
                 <div class="d-grid gap-2 mt-3">
-                <button class="btn btn-success" name="signin">Sign up</button>
+                    <h5 style="font-size: 12px; color: red;"><?php echo htmlspecialchars("$err_message") ?></h5>
+                    <button class="btn btn-success" name="signin">Sign up</button>
                 </div>
                 <div class="text-center mt-3">
                 <small>Already have an accunt? <a href="start.php">Σύνδεση</a></small>

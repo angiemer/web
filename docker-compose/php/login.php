@@ -7,14 +7,17 @@ session_start();
 header('Content-Type: application/json'); // response as json
 require_once 'db.php';
 
+$err_message = '';
+
 // Check if it's a POST request
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['userUsername'] ?? '');
+    $username = filter_input(INPUT_POST, "userUsername", FILTER_SANITIZE_SPECIAL_CHARS);
     $password = trim($_POST['userPassword'] ?? '');
 
     // Validate input
     if (empty($username) || empty($password)) {
-        echo json_encode(['success' => false, 'error' => 'Please fill in all fields']);
+        $err_message = "please provide username and password";
+        header('Location:start.php?err_message=' . $err_message);
         exit;
     }
 
@@ -53,11 +56,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
             } else {
                 // Invalid password
-                echo json_encode(['success' => false, 'error' => 'Invalid username or password']);
+                $err_message = "Invalid Password";
+                header('Location:start.php?err_message=' . $err_message);
+                exit;
             }
         } else {
             // User not found
-            echo json_encode(['success' => false, 'error' => 'Invalid username or password']);
+            $err_message = "User Not Found";
+            header('Location:start.php?err_message=' . $err_message);
+            exit;
         }
         $stmt->close();
     } catch (Exception $e) {
@@ -66,7 +73,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 } else {
     // Invalid request method
-    echo json_encode(['success' => false, 'error' => 'Invalid request method']);
+    $err_message = "Invalid request method";
+    header('Location:start.php?variable=' . $err_message);
+    exit;
 }
 
 $conn->close();

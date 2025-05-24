@@ -27,15 +27,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 //./ $input = json_decode(file_get_contents('php://=input'), true);
 // error_log("Input received: " . print_r($input, true));
 
-$newFirstName = trim($_POST['first_name'] ?? '');
-$newLastName = trim($_POST['last_name'] ?? '');
-$newUsername = trim($_POST['username'] ?? '');
-$newEmail = trim($_POST['email'] ?? '');
+$newFirstName = filter_input(INPUT_POST, "first_name", FILTER_SANITIZE_SPECIAL_CHARS);
+$newLastName = filter_input(INPUT_POST, "last_name", FILTER_SANITIZE_SPECIAL_CHARS);
+$newUsername = filter_input(INPUT_POST, "username", FILTER_SANITIZE_SPECIAL_CHARS);
+$newEmail = filter_input(INPUT_POST, "email", FILTER_SANITIZE_SPECIAL_CHARS);
 $newAvatar = trim($_POST['avatar'] ?? '');
 $newPassword = trim($_POST['password'] ?? '');
 $loggedUser = $_SESSION['username'];
 
-// Add password update if provided
 if ($newFirstName) {
     $stmt = $conn->prepare("UPDATE users SET first_name = ? WHERE username = ?");
     $stmt->bind_param('ss', $newFirstName, $loggedUser);
@@ -73,48 +72,4 @@ if ($newAvatar) {
 header('Location: dashboard.php');
 exit;
 
-// try {
-//     // Έλεγχος αν το username ή το email χρησιμοποιούνται από άλλον χρήστη
-//     $stmt = $conn->prepare("SELECT id FROM users WHERE (username = ? OR email = ?) AND username != ?");
-//     if (!$stmt) {
-//         throw new Exception("Failed to prepare statement: " . $conn->error);
-//     }
-//     $stmt->bind_param('sss', $newUsername, $newEmail, $_SESSION['username']);
-//     $stmt->execute();
-//     $result = $stmt->get_result();
-//     if ($result->num_rows > 0) {
-//         http_response_code(400);
-//         header('Content-Type: application/json');
-//         echo json_encode(['success' => false, 'error' => 'Username or email already exists']);
-//         $stmt->close();
-//         exit;
-//     }
-//     $stmt->close();
-
-//     $query .= " WHERE username = ?";
-//     $params[] = $_SESSION['username'];
-//     $types .= 's';
-
-//     // Εκτέλεση του query
-//     $stmt = $conn->prepare($query);
-//     if (!$stmt) {
-//         throw new Exception("Failed to prepare update statement: " . $conn->error);
-//     }
-//     $stmt->bind_param($types, ...$params);
-//     if ($stmt->execute()) {
-//         // Ενημέρωση της συνεδρίας
-//         $_SESSION['username'] = $newUsername;
-//         header('Content-Type: application/json');
-//         echo json_encode(['success' => true]);
-//     } else {
-//         http_response_code(500);
-//         header('Content-Type: application/json');
-//         echo json_encode(['success' => false, 'error' => 'Failed to update profile']);
-//     }
-//     $stmt->close();
-// } catch (Exception $e) {
-//     http_response_code(500);
-//     echo json_encode(['success' => false, 'error' => 'Server error: ' . $e->getMessage()]);
-// }
-// $conn->close();
 ?>

@@ -1,3 +1,6 @@
+<?php 
+    $err_message = $_GET['err_message'] ?? '';
+?>
 <!DOCTYPE html>
 <html lang="el">
 <head>
@@ -17,6 +20,8 @@
                 <input type="text" id="userUsername" name="userUsername" class="form-control mb-2" placeholder="username" required>
                 <input type="password" id="userPassword" name="userPassword" class="form-control mb-2" placeholder="password" required>
                 <div class="d-grid gap-2 mt-3">
+                    <h5 style="font-size: 12px; color: red;"><?php echo htmlspecialchars("$err_message") ?></h5>
+
                     <button type="submit" name="login" class="btn btn-primary">Login</button>
                 </div>
                 </form>
