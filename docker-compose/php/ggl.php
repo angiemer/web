@@ -1,6 +1,5 @@
 <?php
-
-if(file_exists('./vendor/autoload.php')){
+if (file_exists('./vendor/autoload.php')) {
     require_once './vendor/autoload.php';
 }
 
@@ -34,44 +33,39 @@ if (isset($_GET['code'])) {
 }
 
 try {
-
     if (isset($_SESSION['access_token']) && $_SESSION['access_token']) {
         $client->setAccessToken($_SESSION['access_token']);
         $youtube = new Google_Service_YouTube($client);
 
         // Search for videos
-        if($_SERVER['REQUEST_METHOD'] === 'POST'){
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $query = trim($_POST['query'] ?? '');
-            $searchResponse = $youtube->search->listSearch('snippet', array(
-            'q' => $query,
-            'maxResults' => 10,
-        ));
+            $searchResponse = $youtube->search->listSearch('snippet', [
+                'q' => $query,
+                'maxResults' => 10,
+            ]);
 
-        $_SESSION["searched"] = true;
-        $_SESSION["array_of_response"] = $searchResponse;
+            $_SESSION["searched"] = true;
+            $_SESSION["array_of_response"] = $searchResponse;
 
-        header("location:dashboard.php");
-        exit();
-
+            header("Location: dashboard.php");
+            exit();
         }
-
-        // foreach ($searchResponse['items'] as $searchResult) {
-        //     echo sprintf('<p>%s (Watch on YT: <a href="https://youtu.be/%s" target="_blank">https://youtu.be/%s</a>)</p>', $searchResult['snippet']['title'], $searchResult['id']['videoId'], $searchResult['id']['videoId']);
-        // }
     } else {
+        // Redirect to Google OAuth URL instead of displaying a link
         $authUrl = $client->createAuthUrl();
-        echo '<a href="' . $authUrl . '">Authenticate with YouTube</a>';
+        header('Location: ' . $authUrl);
         exit();
     }
-} catch (Google\Service\Exception $e) {
+} catch (Google_Service_Exception $e) {
     if ($e->getCode() == 401) {
-        // Redirect to login page
+        // Redirect to Google OAuth URL for re-authentication
         $authUrl = $client->createAuthUrl();
-        header('Location: ' . $authUrl );
+        header('Location: ' . $authUrl);
         exit();
     } else {
         // Handle other exceptions
         echo 'An error occurred: ' . $e->getMessage();
-    }    
+    }
 }
 ?>

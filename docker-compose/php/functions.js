@@ -135,20 +135,22 @@
             });
         }
 
+
         function refreshProfileUI() {
-            document.getElementById("profileUsername").textContent = userProfile.username;
-            document.getElementById("profileName").textContent = (userProfile.first_name || '') + " " + (userProfile.last_name || '');
-            document.getElementById("profileEmail").textContent = userProfile.email;
+            document.getElementById("profileUsername").textContent = userUsername;
+            document.getElementById("profileName").textContent = (userFirstName || '') + " " + (userLastName || '');
+            document.getElementById("profileEmail").textContent = userEmail;
             const avatarEls = document.querySelectorAll(".rounded-circle");
             avatarEls.forEach(el => el.src = userProfile.avatar);
             //showFavorites();
         }
 
+
         function viewProfile() {
-            document.getElementById("viewProfileAvatar").src = userProfile.avatar || 'https://via.placeholder.com/100.png';
-            document.getElementById("viewProfileName").textContent = (userProfile.first_name || '') + " " + (userProfile.last_name || '');
-            document.getElementById("viewProfileUsername").textContent = userProfile.username || '';
-            document.getElementById("viewProfileEmail").textContent = userProfile.email || '';
+            document.getElementById("viewProfileAvatar").src = userAvatar || '';
+            document.getElementById("viewProfileName").textContent = (firstName || '') + " " + (lastName || '');
+            document.getElementById("viewProfileUsername").textContent = userUsername || '';
+            document.getElementById("viewProfileEmail").textContent = userEmail || '';
             
             const modal = new bootstrap.Modal(document.getElementById("viewProfileModal"));
             modal.show();
@@ -214,7 +216,7 @@
                     userProfile.last_name = newLastName;
                     userProfile.username = newUsername;
                     userProfile.email = newEmail;
-                    userProfile.avatar = newAvatar || 'https://via.placeholder.com/100.png';
+                    userProfile.avatar = newAvatar || '';
                     
                     refreshProfileUI();
                     const modal = bootstrap.Modal.getInstance(document.getElementById("manageProfileModal"));
@@ -231,53 +233,53 @@
             }
         }
 
-        function search() {
-            const query = document.getElementById("searchInput").value.trim().toLowerCase();
-            const searchResultsContainer = document.getElementById("searchResults");
-            searchResultsContainer.innerHTML = "";
+        // function search() {
+        //     const query = document.getElementById("searchInput").value.trim().toLowerCase();
+        //     const searchResultsContainer = document.getElementById("searchResults");
+        //     searchResultsContainer.innerHTML = "";
 
-            if (!query) {
-                searchResultsContainer.innerHTML = `<p class="text-muted">Please enter a search term.</p>`;
-                return;
-            }
+        //     if (!query) {
+        //         searchResultsContainer.innerHTML = `<p class="text-muted">Please enter a search term.</p>`;
+        //         return;
+        //     }
 
-            let results = [];
+        //     let results = [];
 
-            playlists.forEach((playlist, pIndex) => {
-                playlist.songs.forEach((song, sIndex) => {
-                    if (song.toLowerCase().includes(query)) {
-                        results.push({
-                            playlistName: playlist.name,
-                            songTitle: song,
-                            pIndex,
-                            sIndex
-                        });
-                    }
-                });
-            });
+        //     playlists.forEach((playlist, pIndex) => {
+        //         playlist.songs.forEach((song, sIndex) => {
+        //             if (song.toLowerCase().includes(query)) {
+        //                 results.push({
+        //                     playlistName: playlist.name,
+        //                     songTitle: song,
+        //                     pIndex,
+        //                     sIndex
+        //                 });
+        //             }
+        //         });
+        //     });
 
-            if (results.length === 0) {
-                searchResultsContainer.innerHTML = `<p class="text-muted">No songs found matching "${query}".</p>`;
-                return;
-            }
+        //     if (results.length === 0) {
+        //         searchResultsContainer.innerHTML = `<p class="text-muted">No songs found matching "${query}".</p>`;
+        //         return;
+        //     }
 
-            const list = document.createElement("ul");
-            list.className = "list-group";
+        //     const list = document.createElement("ul");
+        //     list.className = "list-group";
 
-            results.forEach(result => {
-                const li = document.createElement("li");
-                li.className = "list-group-item d-flex justify-content-between align-items-center";
-                li.innerHTML = `
-                    <span><strong>${result.songTitle}</strong> <em>(in ${result.playlistName})</em></span>
-                    <button class="btn btn-sm btn-outline-danger" onclick="toggleFavorite('${result.songTitle}')">
-                        ${userProfile.favorites.includes(result.songTitle) ? '💔' : '❤️'}
-                    </button>
-                `;
-                list.appendChild(li);
-            });
+        //     results.forEach(result => {
+        //         const li = document.createElement("li");
+        //         li.className = "list-group-item d-flex justify-content-between align-items-center";
+        //         li.innerHTML = `
+        //             <span><strong>${result.songTitle}</strong> <em>(in ${result.playlistName})</em></span>
+        //             <button class="btn btn-sm btn-outline-danger" onclick="toggleFavorite('${result.songTitle}')">
+        //./           ${userProfile.favorites.includes(result.songTitle) ? '💔' : '❤️'}
+        //             </button>
+        //         `;
+        //         list.appendChild(li);
+        //     });
 
-            searchResultsContainer.appendChild(list);
-        }
+        //     searchResultsContainer.appendChild(list);
+        // }
 
 
         function logout() {

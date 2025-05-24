@@ -33,31 +33,37 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['signin'])) {
         $stmt->bind_param('sssss', $userFirstname, $userLastname, $userUsername, $hashedPassword, $userEmail);
 
         if ($stmt->execute()) {
-            // Success: Redirect to login.php
+            // Set session variables
             $_SESSION['username'] = $userUsername;
-            header('Location: dashboard.php');
+            $_SESSION['first_name'] = $userFirstname;
+            $_SESSION['last_name'] = $userLastname;
+            $_SESSION['email'] = $userEmail;
+            $_SESSION['image'] = './image.png';
+
+            // Redirect to ggl.php for YouTube authentication
+            header('Location: ggl.php');
             $stmt->close();
             $conn->close();
             exit;
         } else {
-            // Failure: Exit with error
+            // Failure: Redirect to signup.php
             $_SESSION['error'] = 'Failed to register user.';
-            header('Location: signin.php');
+            header('Location: signup.php');
             $stmt->close();
             $conn->close();
             exit;
         }
     } catch (Exception $e) {
-        // Log error and exit
-        error_log("Signin error: " . $e->getMessage());
+        // Log error and redirect
+        error_log("Signup error: " . $e->getMessage());
         $_SESSION['error'] = 'An error occurred during registration. Please try again.';
-        header('Location: signin.php');
+        header('Location: signup.php');
         $conn->close();
         exit;
     }
 } else {
     // Invalid request
-    header('Location: signin.php');
+    header('Location: signup.php');
     exit;
 }
 ?>

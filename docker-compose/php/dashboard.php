@@ -1,18 +1,14 @@
 <?php
-
-if (file_exists('./vendor/autoload.php')) {
-    require_once './vendor/autoload.php';
-}
 require_once 'ggl.php';
 //session_start();
 $searchResponse = isset($_SESSION['array_of_response']) ? $_SESSION['array_of_response'] : null;
 
-if ($searchResponse && !empty($searchResponse['items'])){
-    echo '<script type="text/javascript">',
-    'search();',
-    '</script>';
-    echo "<script>alert('inside if')</script>";
-}
+// if ($searchResponse && !empty($searchResponse['items'])){
+//     echo '<script type="text/javascript">',
+//     'search();',
+//     '</script>';
+//     echo "<script>alert('inside if')</script>";
+// }
 require_once 'db.php';
 
 // Έλεγχος αν ο χρήστης είναι συνδεδεμένος
@@ -20,16 +16,6 @@ if (!isset($_SESSION['username'])) {
     header('Location: start.php');
     exit;
 }
-
-// Αρχικοποίηση της $userProfile
-$userProfile = [
-    'username' => $_SESSION['username'],
-    'first_name' => '',
-    'last_name' => '',
-    'email' => '',
-    'avatar' => 'images.png',
-    'favorites' => []
-];
 
 try {
     // Ελέγξτε αν η σύνδεση είναι έγκυρη
@@ -59,20 +45,39 @@ try {
         $userProfile['username'] = $user['username'];
         $userProfile['email'] = $user['email'] ?: '';
         $userProfile['avatar'] = $user['avatar'] ?: 'images.png';
+        $userProfile['avatar'] = (!empty($user['avatar'])) ? $user['avatar'] : 'images.png';
+
     } else {
         error_log("User not found or multiple users with username: $username");
         session_destroy();
         header('Location: start.php');
         exit;
     }
+
     $stmt->close();
 } catch (Exception $e) {
     error_log("Error fetching user profile: " . $e->getMessage());
     $error_message = "Unable to load user profile. Please try again later.";
 }
 $conn->close();
-?>
 
+// Αρχικοποίηση της $userProfile
+$userProfile = [
+    'username' => $_SESSION['username'],
+    'first_name' => $_SESSION['first_name'],
+    'last_name' => $_SESSION['last_name'],
+    'email' => $_SESSION['email'],
+    'avatar' => $_SESSION['image'],
+    'favorites' => []
+];
+$_SESSION['image'] = 'images.png';
+
+$userUsername = $_SESSION['username'];
+$userFirstName = $_SESSION['first_name'];
+$userLastName = $_SESSION['last_name'];
+$userEmail = $_SESSION['email'];
+$userAvatar = $_SESSION['image'];
+?>
 <!DOCTYPE html>
 <html lang="el">
 <head>
@@ -108,8 +113,8 @@ $conn->close();
                         <button class="btn btn-primary" type="submit">Search</button>
                     </form>
                     <button class="btn btn-outline-light me-2" onclick="toggleDarkMode()">🌙</button>
-                    <button class="btn p-0 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileSidebar">
-                        <img src="<?php echo htmlspecialchars($userProfile['avatar']); ?>" class="rounded-circle" alt="User Avatar" style="width: 40px; height: 40px;">
+                    <button class="btn p-0 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileSidebar" onclick="loadSidebarProfile()">
+                        <img src="" class="rounded-circle mb-3" alt="User Avatar">
                     </button>
                 </div>
             </div>
@@ -143,10 +148,10 @@ $conn->close();
             <div class="offcanvas-body">
                 <div class="card text-center">
                     <div class="card-body">
-                        <img src="<?php echo htmlspecialchars($userProfile['avatar']); ?>" class="rounded-circle mb-3" alt="User Avatar">
-                        <h5 class="card-title" id="profileUsername"><?php echo htmlspecialchars($userProfile['username']); ?></h5>
-                        <p class="card-text" id="profileName"><?php echo htmlspecialchars($userProfile['first_name'] . ' ' . $userProfile['last_name']); ?></p>
-                        <p class="card-text" id="profileEmail"><?php echo htmlspecialchars($userProfile['email']); ?></p>
+                        <img src="<?php echo htmlspecialchars($userAvatar); ?>" class="rounded-circle mb-3" alt="User Avatar">
+                        <h5 class="card-title" id="profileUsername"><?php echo htmlspecialchars($userUsername); ?></h5>
+                        <p class="card-text" id="profileName"><?php echo htmlspecialchars($userFirstName . ' ' . $userLastName); ?></p>
+                        <p class="card-text" id="profileEmail"><?php echo htmlspecialchars($userEmail); ?></p>
                         <div class="d-grid gap-2">
                             <button class="btn btn-primary" onclick="viewProfile()">View profile</button>
                             <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#manageProfileModal">Manage profile</button>
@@ -156,6 +161,25 @@ $conn->close();
                 </div>
             </div>
         </div>
+
+                <!-- VIEW PROFILE MODAL -->
+        <div class="modal fade" id="viewProfileModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content rounded-4 shadow">
+                    <div class="modal-header bg-primary text-white rounded-top-4">
+                        <h5 class="modal-title">User profile</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <img id="viewProfileAvatar" class="rounded-circle mb-3" style="width: 100px; height: 100px;" src="">
+                        <h5 id="viewProfileName"></h5>
+                        <p id="viewProfileUsername"></p>
+                        <p id="viewProfileEmail"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
 
         <!-- MANAGE PROFILE MODAL -->
         <div class="modal fade" id="manageProfileModal" tabindex="-1">
@@ -202,23 +226,6 @@ $conn->close();
             </div>
         </div>
 
-        <!-- VIEW PROFILE MODAL -->
-        <div class="modal fade" id="viewProfileModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content rounded-4 shadow">
-                    <div class="modal-header bg-primary text-white rounded-top-4">
-                        <h5 class="modal-title">User profile</h5>
-                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div class="modal-body text-center">
-                        <img id="viewProfileAvatar" class="rounded-circle mb-3" style="width: 100px; height: 100px;" src="">
-                        <h5 id="viewProfileName"></h5>
-                        <p id="viewProfileUsername"></p>
-                        <p id="viewProfileEmail"></p>
-                    </div>
-                </div>
-            </div>
-        </div>
 
         <!-- OFFCANVAS MENU -->
         <div class="offcanvas offcanvas-start" tabindex="-1" id="menuSidebar">
@@ -266,6 +273,13 @@ $conn->close();
             <p>search to see results.</p>
         <?php endif; ?>
     </div>
+    <script>
+        const userUsername = <?php echo json_encode($userUsername, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS); ?>;
+        const firstName = <?php echo json_encode($userFirstName, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS); ?>;
+        const lastName = <?php echo json_encode($userLastName, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS); ?>;
+        const userEmail = <?php echo json_encode($userEmail, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS); ?>;
+        const userAvatar = <?php echo json_encode($userAvatar, JSON_HEX_TAG | JSON_HEX_AMP | JSON_HEX_QUOT | JSON_HEX_APOS); ?>;
+    </script>
     <script type="text/javascript" src="functions.js"></script>
 </body>
 </html>

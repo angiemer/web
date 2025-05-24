@@ -1,22 +1,34 @@
 <?php
 session_start();
-require_once 'db.php'; // Διατηρείται αν χρειάζεται, αλλά πιθανότατα δεν είναι απαραίτητο
 
-// Καθαρισμός όλων των μεταβλητών συνεδρίας
-$_SESSION = array();
+// Clear all session variables
+session_unset();
 
-// Διαγραφή του session cookie αν χρησιμοποιούνται cookies
-if (ini_get("session.use_cookies")) {
-    $params = session_get_cookie_params();
-    setcookie(session_name(), '', time() - 3600, 
-    $params['path'], $params['domain'], 
-    $params['secure'], $params['httponly']);
-}
-
-// Καταστροφή της συνεδρίας
+// Destroy the session
 session_destroy();
 
-// Ανακατεύθυνση στη σελίδα σύνδεσης
-header("Location: start.php");
+// Clear the session cookie
+if (ini_get("session.use_cookies")) {
+    $params = session_get_cookie_params();
+    setcookie(
+        session_name(),
+        '',
+        time() - 42000, // Expire far in the past for immediate deletion
+        $params["path"],
+        $params["domain"],
+        $params["secure"],
+        $params["httponly"]
+    );
+}
+
+// Clear all other cookies (if any exist)
+if (isset($_COOKIE)) {
+    foreach ($_COOKIE as $name => $value) {
+        setcookie($name, '', time() - 42000, '/');
+    }
+}
+
+// Redirect to start page
+header('Location: start.php');
 exit;
 ?>
