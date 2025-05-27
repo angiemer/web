@@ -2,9 +2,7 @@
 
 CREATE TABLE `favorites` (
     `id` int NOT NULL AUTO_INCREMENT,
-    `video_id` varchar(255) NOT NULL,
-    `title` text NOT NULL,
-    `thumbnail` text NOT NULL,
+    `user_id` int NOT NULL,
     `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 3 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
@@ -14,9 +12,11 @@ CREATE TABLE `favorites` (
 CREATE TABLE `songs` (
     `id` int NOT NULL AUTO_INCREMENT,
     `title` varchar(255) NOT NULL,
-    `youtube_id` varchar(100) NOT NULL,
+    `song_id` varchar(100) NOT NULL,
+    `thumbnail` varchar(255) DEFAULT NULL,
     `created_at` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (`id`)
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `song_id` (`song_id`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
 
 -- di_internet_technologies_project.users definition
@@ -34,6 +34,36 @@ CREATE TABLE `users` (
     UNIQUE KEY `username` (`username`),
     UNIQUE KEY `email` (`email`)
 ) ENGINE = InnoDB AUTO_INCREMENT = 19 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+-- di_internet_technologies_project.playlist definition
+
+CREATE TABLE `playlists` (
+    `id` int NOT NULL AUTO_INCREMENT,
+    `user_id` int NOT NULL,
+    `name` varchar(255) NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `user_playlist_unique` (`user_id`, `name`)
+) ENGINE = InnoDB AUTO_INCREMENT = 4 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+
+-- di_internet_technologies_project.playlist_songs definition
+
+CREATE TABLE `playlist_songs` (
+    `playlist_id` INT NOT NULL,
+    `song_id` INT NOT NULL,
+    PRIMARY KEY (`playlist_id`, `song_id`),
+    FOREIGN KEY (`playlist_id`) REFERENCES playlists(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`song_id`) REFERENCES songs(`id`) ON DELETE CASCADE
+);
+
+-- di_internet_technologies_project.favorite_songs definition
+
+CREATE TABLE `favorite_songs` (
+    `favor_id` int NOT NULL,
+    `song_id` int NOT NULL,
+    PRIMARY KEY (`favor_id`, `song_id`),
+    FOREIGN KEY (`favor_id`) REFERENCES favorites(`id`) ON DELETE CASCADE,
+    FOREIGN KEY (`song_id`) REFERENCES songs(`id`) ON DELETE CASCADE
+);
 
 -- di_internet_technologies_project.followers definition
 
@@ -88,3 +118,4 @@ CREATE TABLE `search_logs` (
     KEY `user_id` (`user_id`),
     CONSTRAINT `search_logs_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE SET NULL
 ) ENGINE = InnoDB AUTO_INCREMENT = 4 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;
+

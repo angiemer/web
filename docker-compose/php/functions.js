@@ -11,139 +11,137 @@
             if (localStorage.getItem("darkMode") === "on") {
                 document.body.classList.add("dark-mode");
             }
-            refreshProfileUI();
+            document.getElementById("playlistsSection").classList.add("d-none");
+            document.getElementById("favoritesSection").classList.add("d-none");
+            // refreshProfileUI();
 
-        const profileForm = document.getElementById("profileUpdateForm");
-            profileForm.addEventListener("submit", async (event) => {
-                event.preventDefault();
-                await updateProfile();
-            });
+            // const profileForm = document.getElementById("profileUpdateForm");
+            //     profileForm.addEventListener("submit", async (event) => {
+            //         event.preventDefault();
+            //         await updateProfile();
+            //     });
         });
 
         function goHome() {
             document.getElementById("homeSection").classList.remove("d-none");
             document.getElementById("playlistsSection").classList.add("d-none");
             document.getElementById("favoritesSection").classList.add("d-none");
+            document.getElementById("videos_section").classList.remove("d-none");
         }
 
         function goToPlaylists() {
             document.getElementById("homeSection").classList.add("d-none");
             document.getElementById("playlistsSection").classList.remove("d-none");
             document.getElementById("favoritesSection").classList.add("d-none");
-            renderPlaylists();
+            document.getElementById("videos_section").classList.add("d-none");
+
+            //renderPlaylists();
         }
 
         function showFavorites() {
             document.getElementById("homeSection").classList.add("d-none");
             document.getElementById("playlistsSection").classList.add("d-none");
             document.getElementById("favoritesSection").classList.remove("d-none");
-
-            const favList = document.getElementById("favoritesList");
-            favList.innerHTML = "";
-
-            if (userProfile.favorites.length === 0) {
-                favList.innerHTML = `<li class="list-group-item text-muted">No favorite songs yet.</li>`;
-                return;
-            }
-
-            userProfile.favorites.forEach(song => {
-                const li = document.createElement("li");
-                li.className = "list-group-item d-flex justify-content-between align-items-center";
-                li.innerHTML = `
-                    <span>🎵 ${song}</span>
-                    <button class="btn btn-sm btn-outline-danger" onclick="toggleFavorite('${song}')">💔 Remove</button>
-                `;
-                favList.appendChild(li);
-            });
+            document.getElementById("videos_section").classList.add("d-none");
         }
 
-        function addPlaylist() {
-            const name = document.getElementById("newPlaylistName").value.trim();
-            if (!name) return alert("Please enter a playlist name.");
-            playlists.push({ name, songs: [] });
-            document.getElementById("newPlaylistName").value = "";
-            renderPlaylists();
-        }
+        // function addPlaylist() {
+        //     const name = document.getElementById("newPlaylistName").value.trim();
+        //     if (!name) return alert("Please enter a playlist name.");
+        //     playlists.push({ name, songs: [] });
+        //     document.getElementById("newPlaylistName").value = "";
+        //     renderPlaylists();
+        // }
 
-        function addSong(index) {
-            const title = prompt("Enter song title:");
-            if (title) {
-                playlists[index].songs.push(title);
-                renderPlaylists();
-            }
-        }
+        // function addSong(index) {
+        //     const title = prompt("Enter song title:");
+        //     if (title) {
+        //         playlists[index].songs.push(title);
+        //         renderPlaylists();
+        //     }
+        // }
 
-        function deletePlaylist(index) {
-            if (confirm("Delete this playlist?")) {
-                playlists.splice(index, 1);
-                renderPlaylists();
-            }
-        }
+        // function deletePlaylist(index) {
+        //     if (confirm("Delete this playlist?")) {
+        //         playlists.splice(index, 1);
+        //         renderPlaylists();
+        //     }
+        // }
 
-        function deleteSong(pIndex, sIndex) {
-            playlists[pIndex].songs.splice(sIndex, 1);
-            renderPlaylists();
-        }
+        // function deleteSong(pIndex, sIndex) {
+        //     playlists[pIndex].songs.splice(sIndex, 1);
+        //     renderPlaylists();
+        // }
 
-        function toggleFavorite(song) {
-            const i = userProfile.favorites.indexOf(song);
-            if (i >= 0) userProfile.favorites.splice(i, 1);
-            else userProfile.favorites.push(song);
-            renderPlaylists();
-        }
+        // function toggleFavorite(song) {
+        //     const i = userProfile.favorites.indexOf(song);
+        //     if (i >= 0) userProfile.favorites.splice(i, 1);
+        //     else userProfile.favorites.push(song);
+        //     renderPlaylists();
+        // }
 
-        function renderPlaylists() {
-            const container = document.getElementById("playlistsContainer");
-            container.innerHTML = "";
+        // function renderPlaylists() {
+        // const container = document.getElementById("playlistsContainer");
+        // const message = document.getElementById("playlistsMessage");
 
-            playlists.forEach((pl, i) => {
-                const card = document.createElement("div");
-                card.className = "card mb-3";
+        // container.innerHTML = "";
 
-                const header = document.createElement("div");
-                header.className = "card-header d-flex justify-content-between align-items-center";
-                header.innerHTML = `<strong>${pl.name}</strong>
-                    <div>
-                        <button class="btn btn-sm btn-outline-primary me-2" onclick="addSong(${i})">➕</button>
-                        <button class="btn btn-sm btn-outline-danger" onclick="deletePlaylist(${i})">🗑️</button>
-                    </div>`;
+        // if (!playlists || playlists.length === 0) {
+        //     message.textContent = "⛔ No playlists created yet.";
+        //     return;
+        // }
 
-                const list = document.createElement("ul");
-                list.className = "list-group list-group-flush";
+        // message.textContent = ""; // Clear any message
 
-                if (pl.songs.length === 0) {
-                    list.innerHTML = `<li class="list-group-item text-muted">⛔ No songs yet.</li>`;
-                } else {
-                    pl.songs.forEach((song, sIndex) => {
-                        const li = document.createElement("li");
-                        li.className = "list-group-item d-flex justify-content-between align-items-center";
-                        li.innerHTML = `
-                            <span>🎵 ${song}</span>
-                            <div>
-                                <button class="btn btn-sm btn-outline-danger me-2" onclick="toggleFavorite('${song}')">
-                                    ${userProfile.favorites.includes(song) ? '💔' : '❤️'}
-                                </button>
-                                <button class="btn btn-sm btn-danger" onclick="deleteSong(${i}, ${sIndex})">❌</button>
-                            </div>`;
-                        list.appendChild(li);
-                    });
-                }
+        // playlists.forEach((pl, i) => {
+        //     const card = document.createElement("div");
+        //     card.className = "card mb-3";
 
-                card.appendChild(header);
-                card.appendChild(list);
-                container.appendChild(card);
-            });
-        }
+        //     const header = document.createElement("div");
+        //     header.className = "card-header d-flex justify-content-between align-items-center";
+        //     header.innerHTML = `<strong>${pl.name}</strong>
+        //         <div>
+        //             <button class="btn btn-sm btn-outline-primary me-2" onclick="addSong(${i})">➕</button>
+        //             <button class="btn btn-sm btn-outline-danger" onclick="deletePlaylist(${i})">🗑️</button>
+        //         </div>`;
+
+        //     const list = document.createElement("ul");
+        //     list.className = "list-group list-group-flush";
+
+        //     if (pl.songs.length === 0) {
+        //         list.innerHTML = `<li class="list-group-item text-muted">⛔ No songs yet.</li>`;
+        //     } else {
+        //         pl.songs.forEach((song, sIndex) => {
+        //             const li = document.createElement("li");
+        //             li.className = "list-group-item d-flex justify-content-between align-items-center";
+        //             li.innerHTML = `
+        //                 <span>🎵 ${song}</span>
+        //                 <div>
+        //                     <button class="btn btn-sm btn-outline-danger me-2" onclick="toggleFavorite('${song}')">
+        //./                         ${userProfile.favorites.includes(song) ? '💔' : '❤️'}
+        //                     </button>
+        //                     <button class="btn btn-sm btn-danger" onclick="deleteSong(${i}, ${sIndex})">❌</button>
+        //                 </div>`;
+        //             list.appendChild(li);
+        //         });
+        //     }
+
+        //     card.appendChild(header);
+        //     card.appendChild(list);
+        //     container.appendChild(card);
+        // });
+        // }
 
 
-        function refreshProfileUI() {
-            document.getElementById("profileUsername").textContent = userUsername;
-            document.getElementById("profileName").textContent = (userFirstName || '') + " " + (userLastName || '');
-            document.getElementById("profileEmail").textContent = userEmail;
-            const avatarEls = document.querySelectorAll(".rounded-circle");
-            avatarEls.forEach(el => el.src = userProfile.avatar);
-            //showFavorites();
-        }
+
+        // function refreshProfileUI() {
+        //     document.getElementById("profileUsername").textContent = userUsername;
+        //     document.getElementById("profileName").textContent = (userFirstName || '') + " " + (userLastName || '');
+        //     document.getElementById("profileEmail").textContent = userEmail;
+        //     const avatarEls = document.querySelectorAll(".rounded-circle");
+        //     avatarEls.forEach(el => el.src = userProfile.avatar);
+        //     showFavorites();
+        // }
 
 
         function viewProfile() {

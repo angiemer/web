@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         // Prepare query to fetch user data
-        $stmt = $conn->prepare("SELECT username, password, first_name, last_name, email FROM users WHERE username = ?");
+        $stmt = $conn->prepare("SELECT id, username, password, first_name, last_name, email FROM users WHERE username = ?");
         if (!$stmt) {
             throw new Exception("Failed to prepare statement: " . $conn->error);
         }
@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Verify password
             if (password_verify($password, $user['password'])) {
                 // Successful login: Set session variables
+                $_SESSION['id'] = $user['id'];
                 $_SESSION['username'] = $user['username'];
                 $_SESSION['first_name'] = $user['first_name'];
                 $_SESSION['last_name'] = $user['last_name'];

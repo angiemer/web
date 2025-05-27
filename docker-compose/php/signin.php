@@ -41,6 +41,19 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['signin'])) {
             $_SESSION['email'] = $userEmail;
             $_SESSION['image'] = './image.png';
 
+            $query = $conn->prepare("SELECT id FROM users WHERE username = ?");
+
+            if (!$stmt) {
+                throw new Exception("Failed to prepare statement: " . $conn->error);
+            }
+
+            $query->bind_param('s', $userUsername);
+            $query->execute();
+            $result = $query->get_result();
+            $user = $result->fetch_assoc();
+
+            $_SESSION['id'] = $user['id'];
+
             // Redirect to ggl.php for YouTube authentication
             header('Location: ggl.php');
             $stmt->close();
