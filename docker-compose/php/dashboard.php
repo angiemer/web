@@ -196,17 +196,15 @@ $userAvatar = $_SESSION['image'];
                         <input class="form-control me-2" type="text" placeholder="Search" name="query">
                         <button class="btn btn-primary" type="submit">Search</button>
                     </form>
-                    <button class="btn btn-outline-light me-2" onclick="toggleDarkMode()">🌙</button>
-                    <button class="btn p-0 border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileSidebar" onclick="loadSidebarProfile()">
-                        <img src="" class="rounded-circle mb-3" alt="User Avatar">
+                    <button class="btn btn-primary" type="button" data-bs-toggle="offcanvas" data-bs-target="#profileSidebar" onclick="loadSidebarProfile()" style="margin-right: 10px;">
+                        Profile
                     </button>
+                    <button class="btn btn-outline-light me-2" onclick="toggleDarkMode()">🌙</button>
                 </div>
             </div>
         </nav>
         <!-- HOME -->
         <div class="container mt-4" id="homeSection">
-            <h3>Καλώς ήρθες στην αρχική!</h3>
-            <p>Εδώ εμφανίζονται τα playlists, αγαπημένα, κλπ.</p>
             <h5 style="font-size: 12px; color: red;"><?php echo htmlspecialchars("$err_message") ?></h5>
         </div>
         <!-- PLAYLISTS -->
@@ -229,8 +227,8 @@ $userAvatar = $_SESSION['image'];
                                         <?php foreach ($_SESSION['playlist_songs'][$playlist['id']] as $song): ?>
                                             <li class="class=list-group-item d-flex justify-content-between align-items-center">
                                                 <div class="d-flex align-items-center">
-                                                    <img src="<?php echo htmlspecialchars($song['thumbnail']); ?>" alt="Thumbnail" style="width: 50px; height: 50px;">
-                                                    <a href="https://youtu.be/<?php echo htmlspecialchars($song['song_id']); ?>" target="_blank">
+                                                    <img src="<?php echo htmlspecialchars($song['thumbnail']); ?>" alt="Thumbnail" style="width: 80px; height: 80px; margin: 15px;">
+                                                    <a href="https://youtu.be/<?php echo htmlspecialchars($song['song_id']); ?>" target="_blank" style="all: unset; cursor: pointer; border-radius: 15px; background-color: #6f42c1; padding: 10px; font-size: 18px; color: white;">
                                                         <?php echo htmlspecialchars($song['title']); ?>
                                                     </a>
                                                 </div>
@@ -265,7 +263,7 @@ $userAvatar = $_SESSION['image'];
                         <li class="list-group-item d-flex justify-content-between align-items-center">
                             <div class="d-flex align-items-center">
                                 <img src="<?php echo htmlspecialchars($favorite['thumbnail']); ?>" alt="Thumbnail" style="width: 80px; height: 80px; margin-right: 10px;">
-                                <a href="https://youtu.be/<?php echo htmlspecialchars($favorite['song_id']); ?>" target="_blank">
+                                <a href="https://youtu.be/<?php echo htmlspecialchars($favorite['song_id']); ?>" target="_blank" style="all: unset; cursor: pointer; border-radius: 15px; background-color: #6f42c1; padding: 10px; font-size: 18px; color: white;">
                                     <?php echo htmlspecialchars($favorite['title']); ?>
                                 </a>
                             </div>
@@ -394,7 +392,7 @@ $userAvatar = $_SESSION['image'];
                     ?>
                     <div class="col-md-4 mb-4">
                         <div class="card h-100">
-                            <img src="<?php echo htmlspecialchars($thumbnail); ?>" class="card-img-top" alt="Thumbnail">
+                            <img src="<?php echo htmlspecialchars($thumbnail); ?>" class="card-img-top h-50" alt="Thumbnail" style="object-fit: cover;">
                             <div class="card-body">
                                 <h5 class="card-title"><?php echo htmlspecialchars($title); ?></h5>
                                 <form method="post" action="favorite.php" class="d-inline">

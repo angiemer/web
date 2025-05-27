@@ -1,4 +1,5 @@
 <?php
+require_once 'db.php'; // Ensure database connection
 if (file_exists('./vendor/autoload.php')) {
     require_once './vendor/autoload.php';
 }
@@ -46,6 +47,47 @@ try {
             ]);
 
             $_SESSION["searched"] = true;
+            $_SESSION["array_of_response"] = $searchResponse;
+
+            header("Location: dashboard.php");
+            exit();
+        }
+        if ($_SESSION["searched"] == false) {
+            $_SESSION["searched"] = true;
+
+            // Get user ID
+            $user_id = $_SESSION['id'];
+
+            // Fetch a random favorite song title
+            $stmt = $conn->prepare("
+                SELECT s.title
+                FROM favorites f
+                JOIN favorite_songs fs ON f.id = fs.favor_id
+                JOIN songs s ON fs.song_id = s.id
+                WHERE f.user_id = ?
+                ORDER BY RAND()
+                LIMIT 1
+            ");
+            if (!$stmt) {
+                throw new Exception("Failed to prepare favorites select query: " . $conn->error);
+            }
+            $stmt->bind_param('i', $user_id);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            $stmt->close();
+
+            if ($result->num_rows > 0) {
+                $favorite = $result->fetch_assoc();
+                $query = $favorite['title'];
+            } else {
+                $query = "Three Little Birds (Don't Worry About a Thing)"; // Fallback query
+            }
+
+            $searchResponse = $youtube->search->listSearch('snippet', [
+                'q' => $query,
+                'maxResults' => 10,
+            ]);
+
             $_SESSION["array_of_response"] = $searchResponse;
 
             header("Location: dashboard.php");

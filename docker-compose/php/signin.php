@@ -40,6 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['signin'])) {
             $_SESSION['last_name'] = $userLastname;
             $_SESSION['email'] = $userEmail;
             $_SESSION['image'] = './image.png';
+            $_SESSION["searched"] = false;
 
             $query = $conn->prepare("SELECT id FROM users WHERE username = ?");
 
