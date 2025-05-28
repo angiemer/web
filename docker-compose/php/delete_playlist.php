@@ -3,18 +3,8 @@ require_once "db.php";
 session_start(); // Start session to access user data
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Check if user is logged in
-    if (!isset($_SESSION['id'])) {
-        error_log("User not logged in");
-        header("Location: start.php");
-        exit;
-    }
 
     try {
-        // Verify database connection
-        if (!$conn || $conn->connect_error) {
-            throw new Exception("Database connection failed: " . ($conn ? $conn->connect_error : "Connection not established"));
-        }
 
         // Get user ID
         $user_id = $_SESSION['id'];

@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['signin'])) {
         $result = $stmt->get_result();
 
         if ($result->num_rows > 0) {
-            $_SESSION['error'] = 'Username or email already exists.';
+            // $_SESSION['error'] = 'Username or email already exists.';
             $err_message = "Username or email already exists.";
             header('Location: signup.php?err_message=' . $err_message);
             $stmt->close();

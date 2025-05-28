@@ -5,12 +5,6 @@ require_once "db.php";
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $playlistName = filter_input(INPUT_POST, "playlistName", FILTER_SANITIZE_SPECIAL_CHARS);
 
-    if (!$playlistName) {
-        $err_message = "Playlist name is required";
-        header("Location: dashboard.php?err_message=" . urlencode($err_message));
-        exit;
-    }
-
     // Check if playlist exists
     $query = $conn->prepare("SELECT id FROM playlists WHERE name = ?");
     $query->bind_param("s", $playlistName);
@@ -83,7 +77,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $insertLink->close();
 
     $conn->close();
-    header("Location: dashboard.php?success=Video added to playlist");
+    header("Location: dashboard.php");
     exit;
 }
 ?>

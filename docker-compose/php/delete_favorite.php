@@ -3,12 +3,6 @@ require_once "db.php";
 session_start(); // Start session to access user data
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    // Check if user is logged in
-    if (!isset($_SESSION['id'])) {
-        error_log("User not logged in");
-        header("Location: start.php");
-        exit;
-    }
 
     try {
         // Verify database connection
@@ -29,9 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         $video_id = $favorite_data['song_id'];
-
-        // Start transaction
-        $conn->begin_transaction();
 
         // Step 1: Get the user's favorites entry
         $stmt = $conn->prepare("SELECT id FROM favorites WHERE user_id = ?");

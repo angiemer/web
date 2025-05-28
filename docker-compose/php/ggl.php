@@ -18,6 +18,12 @@ $client->addScope(Google_Service_YouTube::YOUTUBE_READONLY);
 
 session_start();
 
+// Check if user is logged in
+if (!isset($_SESSION['username'])) {
+    header('Location: start.php');
+    exit;
+}
+
 // Authenticate the user
 if (isset($_GET['code'])) {
     try {

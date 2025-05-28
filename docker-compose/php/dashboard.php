@@ -2,6 +2,12 @@
 require_once "ggl.php"; // Assuming this is for external API calls (e.g., YouTube)
 require_once 'db.php';  // Database connection
 
+// Check if user is logged in
+if (!isset($_SESSION['username'])) {
+    header('Location: start.php');
+    exit;
+}
+
 $searchResponse = isset($_SESSION['array_of_response']) ? $_SESSION['array_of_response'] : null;
 $err_message = $_GET['err_message'] ?? '';
 
@@ -15,12 +21,6 @@ $userProfile = [
     'avatar' => $_SESSION['image'],
     'favorites' => []
 ];
-
-// Check if user is logged in
-if (!isset($_SESSION['username'])) {
-    header('Location: start.php');
-    exit;
-}
 
 try {
     // Verify database connection
@@ -333,15 +333,15 @@ $userAvatar = $_SESSION['image'];
                         <form id="Save" action="update_profile.php" method="post" enctype="multipart/form-data">
                             <div class="mb-3">
                                 <label for="editFirstName" class="form-label">First Name</label>
-                                <input type="text" id="editFirstName" name="first_name" class="form-control" value="<?php echo htmlspecialchars($userProfile['first_name']); ?>" placeholder="Enter first name" required>
+                                <input type="text" id="editFirstName" name="first_name" class="form-control" value="<?php echo htmlspecialchars($_SESSION['first_name']); ?>" placeholder="Enter first name" required>
                             </div>
                             <div class="mb-3">
                                 <label for="editLastName" class="form-label">Last Name</label>
-                                <input type="text" id="editLastName" name="last_name" class="form-control" value="<?php echo htmlspecialchars($userProfile['last_name']); ?>" placeholder="Enter last name" required>
+                                <input type="text" id="editLastName" name="last_name" class="form-control" value="<?php echo htmlspecialchars($_SESSION['last_name']); ?>" placeholder="Enter last name" required>
                             </div>
                             <div class="mb-3">
                                 <label for="editUsername" class="form-label">Username</label>
-                                <input type="text" id="editUsername" name="username" class="form-control" value="<?php echo htmlspecialchars($userProfile['username']); ?>" placeholder="Enter new username" required>
+                                <input type="text" id="editUsername" name="username" class="form-control" value="<?php echo htmlspecialchars($_SESSION['username']); ?>" placeholder="Enter new username" required>
                             </div>
                             <div class="mb-3">
                                 <label for="editPassword" class="form-label">New Password</label>
@@ -349,7 +349,7 @@ $userAvatar = $_SESSION['image'];
                             </div>
                             <div class="mb-3">
                                 <label for="editEmail" class="form-label">Email</label>
-                                <input type="email" id="editEmail" name="email" class="form-control" value="<?php echo htmlspecialchars($userProfile['email']); ?>" placeholder="Enter new email" required>
+                                <input type="email" id="editEmail" name="email" class="form-control" value="<?php echo htmlspecialchars($_SESSION['email']); ?>" placeholder="Enter new email" required>
                             </div>
                             <div class="mb-3">
                                 <label for="editProfilePic" class="form-label">Profile Image URL</label>
