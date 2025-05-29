@@ -2,6 +2,14 @@
 session_start();
 require_once 'db.php';
 
+if ($_SERVER["REQUEST_METHOD"] === "POST" && isset($_POST['username'])) {
+    $username = trim($_POST['username']);
+    setcookie("username", $username, time() + (365 * 24 * 60 * 60), "/");
+    header("Location: " . $_SERVER['PHP_SELF']);
+    exit;
+}
+
+
 if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['signin'])) {
     // Sanitize input
     $userFirstname = filter_input(INPUT_POST, "firstname", FILTER_SANITIZE_SPECIAL_CHARS);

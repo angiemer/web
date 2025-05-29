@@ -26,8 +26,8 @@
                 </div>
                 </form>
                 <div class="text-center mt-3">
-                <small>Δεν έχεις λογαριασμό; 
-                    <a href="signup.php">Εγγραφή</a>
+                <small>Are you new here? 
+                    <a href="signup.php">Sign up</a>
                 </small>
                 </div>
             </div>

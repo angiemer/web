@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // Commit transaction
         $conn->commit();
-        header("Location: dashboard.php"); // Success redirect
+        header("Location:dashboard.php"); // Success redirect
         exit;
 
     } catch (Exception $e) {

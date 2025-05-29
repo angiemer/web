@@ -11,7 +11,7 @@ require_once "ggl.php";
 </head>
 <body>
 <div class="container mt-5">
-    <h1 class="mb-4">Αποτελέσματα αναζήτησης</h1>
+    <h1 class="mb-4">Search Results</h1>
 
     <?php if ($searchResponse): ?>
         <div class="row">
@@ -25,11 +25,11 @@ require_once "ggl.php";
                     <img src="<?php echo $thumbnail; ?>" class="card-img-top" alt="Thumbnail">
                     <div class="card-body">
                         <h5 class="card-title"><?php echo htmlspecialchars($title); ?></h5>
-                        <a href="https://youtu.be/<?php echo $videoId; ?>" class="btn btn-sm btn-primary" target="_blank">Δες στο YouTube</a>
+                        <a href="https://youtu.be/<?php echo $videoId; ?>" class="btn btn-sm btn-primary" target="_blank">See on YouTube</a>
                         <form method="post" action="add_video.php" class="d-inline">
                             <input type="hidden" name="videoId" value="<?php echo $videoId; ?>">
                             <input type="hidden" name="title" value="<?php echo htmlspecialchars($title); ?>">
-                            <button type="submit" class="btn btn-sm btn-success">Προσθήκη στη λίστα</button>
+                            <button type="submit" class="btn btn-sm btn-success">Add to list</button>
                         </form>
                     </div>
                 </div>
@@ -37,7 +37,7 @@ require_once "ggl.php";
             <?php endforeach; ?>
         </div>
     <?php else: ?>
-        <p>Κάνε μια αναζήτηση για να δεις αποτελέσματα.</p>
+        <p>Make a search to see results.</p>
     <?php endif; ?>
 </div>
 </body>
