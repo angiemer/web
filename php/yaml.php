@@ -107,7 +107,7 @@ foreach ($playlistSongs as $item) {
             color: #ce9178;
         }
         .string {
-            color: #9cdcfe;
+            color:rgb(149, 218, 255);
         }
     </style>
 </head>
