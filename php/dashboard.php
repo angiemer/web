@@ -9,6 +9,7 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
+
 $searchResponse = isset($_SESSION['array_of_response']) ? $_SESSION['array_of_response'] : null; //./ $_SESSION['array_or_response'] ?? ''
 $err_message = $_GET['err_message'] ?? ''; 
 
