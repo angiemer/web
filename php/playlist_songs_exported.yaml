@@ -1,0 +1,13 @@
+playlist_songs:
+  - playlist_id: 9
+    song_id: 19
+  - playlist_id: 9
+    song_id: 20
+  - playlist_id: 11
+    song_id: 22
+  - playlist_id: 14
+    song_id: 23
+  - playlist_id: 14
+    song_id: 25
+  - playlist_id: 14
+    song_id: 27
